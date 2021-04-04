@@ -7,12 +7,15 @@ from dash.dependencies import Input, Output
 import pandas as pd
 
 tab_2_layout = html.Div([
+
+    html.H1('Exploring Genres in Movie Industry', style={ 'text-align': 'center','Color': '#228B22'}), #'background-color': '#000000',
+
     html.Div([
         html.Div([
-            html.H1('Please choose a country', style={ 'text-align': 'center','fontColor': 'white'}), #'background-color': '#000000',
+            html.H1('Please choose 1 country', style={ 'text-align': 'center','fontColor': 'white'}), #'background-color': '#000000',
             dropdown_country,
             html.Br(),
-            html.H1('Please choose genre(s)', style={'text-align': 'center','fontColor': 'white'}),#'background-color': '#000000', 
+            html.H1('Please choose 1 genre', style={'text-align': 'center','fontColor': 'white'}),#'background-color': '#000000', 
             dropdown_genre,
             html.Br(),
             radio_moviedata,
@@ -27,6 +30,7 @@ tab_2_layout = html.Div([
             html.Br(),
             html.Br(),
 
+    
     ], style={'display': 'flex','background-color': '#ADD8E6'}),
 
 
@@ -40,7 +44,8 @@ tab_2_layout = html.Div([
         html.Div([
             dcc.Graph(id='graph_example3'),
         ], style={'width': '50%', 'background-color': '#8B000000'}, className='box'),
-  
+
+    
     ], style={'display': 'flex'}),
 
 ])
@@ -53,8 +58,9 @@ tab_2_layout = html.Div([
      Input('moviedata_radio', 'value'),
      Input('year_slider', 'value')]
 )
-def update_graph(countries, genres, moviedata, year):
-    filtered_by_year_df = df[(df['year'] >= year[0]) & (df['year'] <= year[1])]
+def update_graph(countries,genres, moviedata, year):
+    
+    filtered_by_year_df = df_gp[(df_gp['year'] >= year[0]) & (df_gp['year'] <= year[1])]
 
     scatter_data = []
 
@@ -78,8 +84,8 @@ def update_graph(countries, genres, moviedata, year):
                           )
 
     fig = go.Figure(data=scatter_data, layout=scatter_layout)
+
     
- 
     return fig
 
 
@@ -94,7 +100,7 @@ def update_graph(countries, genres, moviedata, year):
 
 
 def update_graph2(countries,genres, moviedata, year):
-    filtered_by_year_df = df[(df['year'] >= year[0]) & (df['year'] <= year[1])]
+    filtered_by_year_df = df_II[(df_II['year'] >= year[0]) & (df_II['year'] <= year[1])]
 
     scatter_data = []
 
@@ -103,7 +109,6 @@ def update_graph2(countries,genres, moviedata, year):
         
     for genre in genres:
         filtered_by_year_and_country_and_genre_df = filtered_by_year_and_country_df.loc[filtered_by_year_and_country_df['genre'] == genre]
-    
 
     top10 = filtered_by_year_and_country_and_genre_df.nlargest(10, "gross")
     top10.sort_values("gross", ascending = True, inplace = True)
@@ -122,7 +127,7 @@ def update_graph2(countries,genres, moviedata, year):
 )
 
 def update_graph3(countries,genres, moviedata, year):
-    filtered_by_year_df = df[(df['year'] >= year[0]) & (df['year'] <= year[1])]
+    filtered_by_year_df = df_II[(df_II['year'] >= year[0]) & (df_II['year'] <= year[1])]
 
 
     for country in countries:
@@ -131,7 +136,6 @@ def update_graph3(countries,genres, moviedata, year):
     for genre in genres:
         filtered_by_year_and_country_and_genre_df = filtered_by_year_and_country_df.loc[filtered_by_year_and_country_df['genre'] == genre]
     
-
     top10 = filtered_by_year_and_country_and_genre_df.nlargest(10, "score")
     top10.sort_values("score", ascending = True, inplace = True)
     

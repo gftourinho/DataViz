@@ -10,6 +10,7 @@ import pandas as pd
 ###################### TAB 1 ############################
 
 tab_1_layout = html.Div([
+    html.Div([
         html.Div([
             html.Br(),
             html.Label(['Choose Country and Company:'],style={'font-weight': 'bold', "text-align": "left"}),
@@ -94,6 +95,7 @@ tab_1_layout = html.Div([
                   )
     
     ])
+])
 
 ####################Callbacks#######################
 

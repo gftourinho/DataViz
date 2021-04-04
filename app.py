@@ -14,18 +14,22 @@ from tabs import tab_2
 
 #df = pd.read_csv(path + 'emissions.csv')
 
-df = pd.read_csv('movies.csv', encoding='ISO-8859-1')
+df = pd.read_csv('movies.csv',encoding='ISO-8859-1')
+df_II = pd.read_csv('movies.csv',encoding='ISO-8859-1')
+
+df_gp_gross = df.groupby(['country', 'genre', 'year'])['gross'].sum().reset_index()
+df_gp_score = df.groupby(['country', 'genre', 'year'])['score'].mean().reset_index()
+df_gp = df_gp_gross.merge(df_gp_score)
 
 df.columns = df.columns.str.capitalize()
 
-
 country_options = [
     dict(label='Country ' + country, value=country)
-    for country in df['country'].unique()]
+    for country in df_II['country'].unique()]
 
 genre_options = [
     dict(label='Genre ' + genre , value=genre)
-    for genre in df['genre'].unique()]
+    for genre in df_II['genre'].unique()]
 
 
 moviedata_options = [
