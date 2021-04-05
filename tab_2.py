@@ -1,10 +1,69 @@
-import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
+from app import app
+
+df_II = pd.read_csv('movies.csv',encoding='ISO-8859-1')
+
+df_gp_gross = df_II.groupby(['country', 'genre', 'year'])['gross'].sum().reset_index()
+df_gp_score = df_II.groupby(['country', 'genre', 'year'])['score'].mean().reset_index()
+df_gp = df_gp_gross.merge(df_gp_score)
+
+
+country_options = [
+    dict(label='Country ' + country, value=country)
+    for country in df_II['country'].unique()]
+
+genre_options = [
+    dict(label='Genre ' + genre , value=genre)
+    for genre in df_II['genre'].unique()]
+
+
+moviedata_options = [
+    {'label': 'Gross Revenue', 'value': 'gross'},
+    {'label': 'Score', 'value': 'score'}
+]
+
+dropdown_country = dcc.Dropdown(
+        id='country_drop',
+        options=country_options,
+        value=['USA'],
+        multi=True
+    )
+
+
+dropdown_genre = dcc.Dropdown(
+        id='genre_drop',
+        options=genre_options,
+        value=['Comedy'],
+        multi=True
+    )
+
+
+radio_moviedata = dcc.RadioItems(
+        id='moviedata_radio',
+        options=moviedata_options,
+        value='score',
+        labelStyle={'display': 'block'}
+    )
+
+year_slider = dcc.RangeSlider(
+        id='year_slider',
+        min=1986,
+        max=2016,
+        value=[1986, 2016],
+        marks={'1986': '1986',
+               '1995': '1995',
+               '2000': '2000',
+               '2005': '2005',
+               '2010': '2010',
+               '2016': '2016'},
+        step=1
+    )
+
 
 tab_2_layout = html.Div([
 
